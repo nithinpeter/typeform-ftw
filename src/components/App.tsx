@@ -1,11 +1,34 @@
 import * as React from 'react';
+import Button from './Button';
+import Input from './Input';
+import { connect } from 'react-redux';
 
-class App extends React.Component<{}, null> {
+interface AppProps {
+  questions: any;
+}
+
+class App extends React.Component<AppProps, null> {
   render() {
     return (
-      <div>app</div>
+      <div>
+        {
+          this.props.questions.map(() => {
+            return (
+              <div>
+                <Button primary={true}>Hi</Button>
+                <Input />
+              </div>
+            );
+          })
+        }
+      </div>
     );
   }
 }
 
-export default App;
+export default connect((state) => {
+  return {
+    questions: state.questions,
+  };
+})(App);
+
