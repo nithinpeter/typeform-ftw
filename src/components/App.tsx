@@ -1,24 +1,23 @@
 import * as React from 'react';
-import Button from './Button';
-import Input from './Input';
+import Question from './Question';
 import { connect } from 'react-redux';
+import './App.css';
 
 interface AppProps {
   questions: any;
+  activeQuestion: number;
 }
 
 class App extends React.Component<AppProps, null> {
   render() {
     return (
-      <div>
+      <div className="app">
         {
-          this.props.questions.map(() => {
-            return (
-              <div>
-                <Button primary={true}>Hi</Button>
-                <Input />
-              </div>
-            );
+          this.props.questions.map((question, index) => {
+            if (index <= this.props.activeQuestion) {
+              return <Question key={index} {...question} isActive={index === this.props.activeQuestion}/>;
+            }
+            return null;
           })
         }
       </div>
@@ -29,6 +28,6 @@ class App extends React.Component<AppProps, null> {
 export default connect((state) => {
   return {
     questions: state.questions,
+    activeQuestion: state.activeQuestion,
   };
 })(App);
-

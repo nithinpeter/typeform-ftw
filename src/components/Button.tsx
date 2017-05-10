@@ -1,18 +1,37 @@
-import styled from 'styled-components';
+import * as React from 'react';
+import { RaisedButton, FontIcon } from 'material-ui';
+
+const ENTER = 'Enter';
 
 interface ButtonProps {
-    primary?: boolean;
+    pressedKey?: string;
+    onClick?: React.EventHandler<any>;
 }
 
-const Button = styled.button`
-  background: ${(props: ButtonProps) => props.primary ? 'palevioletred' : 'white'};
-  color: ${(props: ButtonProps) => props.primary ? 'white' : 'palevioletred'};
+class Button extends React.Component<ButtonProps, {}> {
 
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid palevioletred;
-  border-radius: 3px;
-`;
+    componentWillReceiveProps({pressedKey, onClick}: ButtonProps) {
+        if (pressedKey === ENTER) {
+            if (onClick) {
+                onClick({});
+            }
+        }
+    }
 
+    render() {
+        const {onClick} = this.props;
+
+        return (
+            <div className="btn">
+                <RaisedButton
+                    label="Ok"
+                    primary={true}
+                    onClick={onClick}
+                    icon={<FontIcon className="fa fa-check" />}
+                />
+                <span className="btn__press-enter">press <strong>ENTER</strong></span>
+            </div>
+        );
+    }
+}
 export default Button;
