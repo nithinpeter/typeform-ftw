@@ -2,7 +2,6 @@ import * as React from 'react';
 import { RaisedButton, FontIcon } from 'material-ui';
 
 interface ButtonProps {
-    pressedKey?: string;
     onClick?: React.EventHandler<any>;
 }
 

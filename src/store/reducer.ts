@@ -1,6 +1,8 @@
 import {
     SUBMIT_ANSWER,
     UPDATE_ANSWER,
+    NAVIGATE_NEXT,
+    NAVIGATE_PREV,
 } from './action_creators';
 import validate from '../validate';
 
@@ -23,21 +25,22 @@ const initialState = {
         },
         {
             type: 'TEXT',
-            label: 'Lirst name?',
+            label: 'Email?',
             validations: ['required'],
         },
         {
             type: 'TEXT',
-            label: 'Last name?',
+            label: 'Address?',
             validations: ['required'],
         },
         {
             type: 'TEXT',
-            label: 'Age?',
+            label: 'Phone?',
             validations: ['required'],
         }
     ],
     activeQuestion: 0,
+    completedPercentage: 0,
 };
 
 function app(state, { type, payload }) {
@@ -50,6 +53,10 @@ function app(state, { type, payload }) {
             return updateAnswer(state, payload);
         case SUBMIT_ANSWER:
             return submitAnswer(state, payload);
+        case NAVIGATE_NEXT:
+            return navigateNext(state);
+        case NAVIGATE_PREV:
+            return navigatePrev(state);
         default:
             return state;
     }
@@ -61,10 +68,7 @@ function updateAnswer(state, payload) {
     qn.errorText = '';
     const newQns = [...state.questions.slice(0, payload.index), qn, ...state.questions.slice(payload.index + 1)];
 
-    return {
-        questions: newQns,
-        activeQuestion: state.activeQuestion,
-    };
+    return Object.assign({}, state, { questions: newQns });
 }
 
 function submitAnswer(state, payload) {
@@ -76,16 +80,40 @@ function submitAnswer(state, payload) {
     if (isValid) {
         activeQnIndex = activeQnIndex + 1;
         qn.errorText = '';
+        qn.isValid = true;
     } else {
         qn.errorText = 'Wrong!';
+        qn.isValid = false;
     }
-    const newQnsSub =
+    const newQns =
         [...state.questions.slice(0, payload.index), qn, ...state.questions.slice(payload.index + 1)];
 
+    const completedPercentage = _calculateCompletedPercentage(newQns);
+
     return {
-        questions: newQnsSub,
+        questions: newQns,
         activeQuestion: activeQnIndex,
+        completedPercentage
     };
+}
+
+function navigateNext(state) {
+    if (state.activeQuestion < state.questions.length - 1) {
+        return Object.assign({}, state, { activeQuestion: state.activeQuestion + 1 });
+    }
+    return state;
+}
+
+function navigatePrev(state) {
+    if (state.activeQuestion > 0) {
+        return Object.assign({}, state, { activeQuestion: state.activeQuestion - 1 });
+    }
+    return state;
+}
+
+function _calculateCompletedPercentage(qns) {
+    const completed = qns.filter(qn => qn.isValid) || [];
+    return (completed.length / qns.length) * 100;
 }
 
 export { app };

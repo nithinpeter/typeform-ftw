@@ -1,5 +1,7 @@
 export const UPDATE_ANSWER = 'UPDATE_ANSWER';
 export const SUBMIT_ANSWER = 'SUBMIT_ANSWER';
+export const NAVIGATE_NEXT = 'NAVIGATE_NEXT';
+export const NAVIGATE_PREV = 'NAVIGATE_PREV';
 
 export const updateAnswer = (index, answer) => {
     return {
@@ -17,5 +19,17 @@ export const submitAnswer = (index) => {
         payload: {
             index,
         },
+    };
+};
+
+export const navigateNext = () => {
+    return {
+        type: NAVIGATE_NEXT,
+    };
+};
+
+export const navigatePrev = () => {
+    return {
+        type: NAVIGATE_PREV,
     };
 };

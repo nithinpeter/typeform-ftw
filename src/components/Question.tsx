@@ -2,6 +2,7 @@ import * as React from 'react';
 import { TextField, DatePicker } from 'material-ui';
 import Button from './Button';
 import KeyPressHandler from './KeyPressHandler';
+import ScrollHandler from './ScrollHandler';
 import { updateAnswer, submitAnswer } from '../store/action_creators';
 
 const ENTER = 'Enter';
@@ -18,12 +19,23 @@ interface QuestionProps {
 
 class Question extends React.Component<QuestionProps, {}> {
 
+    fieldRef;
+
     constructor() {
         super();
         this.state = {};
         this.handleChangeAnswer = this.handleChangeAnswer.bind(this);
         this.handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleOnFocus = this.handleOnFocus.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this._focusActive(nextProps.isActive);
+    }
+
+    componentDidMount() {
+        this._focusActive(this.props.isActive);
     }
 
     render() {
@@ -42,19 +54,22 @@ class Question extends React.Component<QuestionProps, {}> {
                 break;
         }
         return (
-            <KeyPressHandler isActive={isActive} onKeyPress={this.handleKeyPress}>
-                <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}>
-                    <label className="question__label">{label}</label>
-                    {content}
-                    {isActive && <Button onClick={this.handleSubmitAnswer} />}
-                </a>
-            </KeyPressHandler>
+            <ScrollHandler isActive={isActive} onFocus={this.handleOnFocus}>
+                <KeyPressHandler isActive={isActive} onKeyPress={this.handleKeyPress}>
+                    <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}>
+                        <label className="question__label">{label}</label>
+                        {content}
+                        {isActive && <Button onClick={this.handleSubmitAnswer} />}
+                    </a>
+                </KeyPressHandler>
+            </ScrollHandler>
         );
     }
 
     renderInputTypeQuestion(label) {
         return (
             <TextField
+                ref={(ref) => this.fieldRef = ref}
                 onChange={this.handleChangeAnswer}
                 fullWidth={true}
                 hintText={label}
@@ -84,6 +99,18 @@ class Question extends React.Component<QuestionProps, {}> {
 
     handleChangeAnswer(event, value) {
         this.props.dispatch(updateAnswer(this.props.index, value));
+    }
+
+    handleOnFocus() {
+        console.log('focused');
+    }
+
+    _focusActive(isActive) {
+        if (isActive) {
+            setTimeout(() => {
+                this.fieldRef.focus();
+            }, 0);
+        }
     }
 
 }

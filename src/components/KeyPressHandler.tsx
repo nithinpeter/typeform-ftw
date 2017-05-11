@@ -6,7 +6,6 @@ interface KeyPressHandlerProps {
 }
 
 interface KeyPressHandlerState {
-    pressedKey?: string;
 }
 
 class KeyPressHandler extends React.Component<KeyPressHandlerProps, KeyPressHandlerState> {
@@ -19,11 +18,11 @@ class KeyPressHandler extends React.Component<KeyPressHandlerProps, KeyPressHand
     }
 
     componentDidMount() {
-        this._handleEventBinding();
+        this._handleEventBinding(this.props.isActive);
     }
 
-    componentWillReceiveProps(nextProps: KeyPressHandler) {
-        this._handleEventBinding();
+    componentWillReceiveProps(nextProps: KeyPressHandlerProps) {
+        this._handleEventBinding(nextProps.isActive);
     }
 
     render() {
@@ -38,12 +37,14 @@ class KeyPressHandler extends React.Component<KeyPressHandlerProps, KeyPressHand
         this.props.onKeyPress(e.key);
     }
 
-    _handleEventBinding() {
-        if (this.props.isActive) {
-            this.keyHandlerRef.addEventListener('keydown', this.onKeyPressHandler);
-        } else {
-            this.keyHandlerRef.removeEventListener('keydown', this.onKeyPressHandler);
-        }
+    _handleEventBinding(isActive) {
+        setTimeout(() => {
+            if (isActive) {
+                window.addEventListener('keydown', this.onKeyPressHandler);
+            } else {
+                window.removeEventListener('keydown', this.onKeyPressHandler);
+            }
+        }, 0);
     }
 }
 
