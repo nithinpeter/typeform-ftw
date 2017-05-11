@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+
+.app {
+    background: #dbfbff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.content {
+    flex: 1;
+    height: 100%;
+    width: 800px;
+    background: #fff;
+    margin: 0 auto;
+    overflow: scroll;
+}
+
+.question {
+    opacity: 0.2;
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 2rem;
+}
+
+.question.active {
+    opacity: 1;
+}
+
+.question__label {
+    font-size: 1.5rem;
+}
+
+.btn {
+    border-radius: 10px;
+    border: 3px gray dotted;
+    padding: 0.5rem;
+    display: inline-block;
+}
+
+.btn__press-enter {
+    margin-left: 0.5rem;
+}
+
+.status-bar {
+    height: 40px;
+    background: #00bcd4;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.status-bar__inner {
+    margin: 0 auto;
+    width: 800px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-bar__progress-container {
+
+}
+
+.status-bar__progress {
+    width: 200px;
+    height: 5px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    margin-top: 4px;
+}
+
+.status-bar__progress__filled {
+    height: 100%;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.status-bar__navigation-container {
+    /*flex: 1;*/
+}
