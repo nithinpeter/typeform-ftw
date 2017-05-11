@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 interface KeyPressHandlerProps {
+    onKeyPress?: any;
     isActive?: boolean;
-    children?: any;
 }
 
 interface KeyPressHandlerState {
@@ -29,13 +29,13 @@ class KeyPressHandler extends React.Component<KeyPressHandlerProps, KeyPressHand
     render() {
         return (
             <div ref={(ref) => this.keyHandlerRef = ref}>
-                {this.props.children({pressedKey: this.state.pressedKey})}
+                {this.props.children}
             </div>
         );
     }
 
     onKeyPressHandler(e) {
-        this.setState({pressedKey: e.key});
+        this.props.onKeyPress(e.key);
     }
 
     _handleEventBinding() {

@@ -6,6 +6,7 @@ import './App.css';
 interface AppProps {
   questions: any;
   activeQuestion: number;
+  dispatch?: any;
 }
 
 class App extends React.Component<AppProps, null> {
@@ -14,10 +15,12 @@ class App extends React.Component<AppProps, null> {
       <div className="app">
         {
           this.props.questions.map((question, index) => {
-            if (index <= this.props.activeQuestion) {
-              return <Question key={index} {...question} isActive={index === this.props.activeQuestion}/>;
-            }
-            return null;
+              return (
+                <Question key={index} {...question}
+                  dispatch={this.props.dispatch}
+                  isActive={index === this.props.activeQuestion}
+                  index={index}/>
+              );
           })
         }
       </div>

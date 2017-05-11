@@ -1,22 +1,12 @@
 import * as React from 'react';
 import { RaisedButton, FontIcon } from 'material-ui';
 
-const ENTER = 'Enter';
-
 interface ButtonProps {
     pressedKey?: string;
     onClick?: React.EventHandler<any>;
 }
 
 class Button extends React.Component<ButtonProps, {}> {
-
-    componentWillReceiveProps({pressedKey, onClick}: ButtonProps) {
-        if (pressedKey === ENTER) {
-            if (onClick) {
-                onClick({});
-            }
-        }
-    }
 
     render() {
         const {onClick} = this.props;
