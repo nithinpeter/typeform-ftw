@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { TextField, DatePicker } from 'material-ui';
-import Button from './Button';
+import OkayButton from './OkayButton';
 import KeyPressHandler from './KeyPressHandler';
 import ScrollHandler from './ScrollHandler';
 import { updateAnswer, submitAnswer } from '../store/action_creators';
+import * as utils from '../helpers/utils';
 
 const ENTER = 'Enter';
 
@@ -20,6 +21,7 @@ interface QuestionProps {
 class Question extends React.Component<QuestionProps, {}> {
 
     fieldRef;
+    containerRef;
 
     constructor() {
         super();
@@ -53,13 +55,15 @@ class Question extends React.Component<QuestionProps, {}> {
                 content = null;
                 break;
         }
+
         return (
             <ScrollHandler isActive={isActive} onFocus={this.handleOnFocus}>
                 <KeyPressHandler isActive={isActive} onKeyPress={this.handleKeyPress}>
-                    <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}>
+                    <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}
+                        ref={(ref: any) => this.containerRef = ref}>
                         <label className="question__label">{label}</label>
                         {content}
-                        {isActive && <Button onClick={this.handleSubmitAnswer} />}
+                        {isActive && <OkayButton onClick={this.handleSubmitAnswer} />}
                     </a>
                 </KeyPressHandler>
             </ScrollHandler>
@@ -81,9 +85,13 @@ class Question extends React.Component<QuestionProps, {}> {
     renderDatepickerTypeQuestion(label) {
         return (
             <DatePicker
+                onShow={utils.disableAppKeyPressListener}
+                onChange={this.handleChangeAnswer}
                 fullWidth={true}
                 hintText={label}
-                name={label} />
+                name={label}
+                errorText={this.props.errorText}
+                autoOk={true} />
         );
     }
 
@@ -99,6 +107,7 @@ class Question extends React.Component<QuestionProps, {}> {
 
     handleChangeAnswer(event, value) {
         this.props.dispatch(updateAnswer(this.props.index, value));
+        utils.enableAppKeyPressListener();
     }
 
     handleOnFocus() {
@@ -108,7 +117,11 @@ class Question extends React.Component<QuestionProps, {}> {
     _focusActive(isActive) {
         if (isActive) {
             setTimeout(() => {
-                this.fieldRef.focus();
+                if (this.fieldRef) {
+                    this.fieldRef.focus();
+                } else if (this.containerRef) {
+                    this.containerRef.focus();
+                }
             }, 0);
         }
     }

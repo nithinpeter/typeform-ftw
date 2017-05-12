@@ -4,7 +4,7 @@ import {
     NAVIGATE_NEXT,
     NAVIGATE_PREV,
 } from './action_creators';
-import validate from '../validate';
+import validate from '../helpers/validate';
 
 const initialState = {
     questions: [
@@ -19,8 +19,8 @@ const initialState = {
             validations: ['required'],
         },
         {
-            type: 'TEXT',
-            label: 'Age?',
+            type: 'DATEPICKER',
+            label: 'Date of Birth?',
             validations: ['required'],
         },
         {
@@ -82,7 +82,7 @@ function submitAnswer(state, payload) {
         qn.errorText = '';
         qn.isValid = true;
     } else {
-        qn.errorText = 'Wrong!';
+        qn.errorText = 'required';
         qn.isValid = false;
     }
     const newQns =

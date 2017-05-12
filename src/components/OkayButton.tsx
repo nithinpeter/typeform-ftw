@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { RaisedButton, FontIcon } from 'material-ui';
 
-interface ButtonProps {
+interface OkayButtonProps {
     onClick?: React.EventHandler<any>;
 }
 
-class Button extends React.Component<ButtonProps, {}> {
+class OkayButton extends React.Component<OkayButtonProps, {}> {
 
     render() {
         const {onClick} = this.props;
@@ -23,4 +23,4 @@ class Button extends React.Component<ButtonProps, {}> {
         );
     }
 }
-export default Button;
+export default OkayButton;

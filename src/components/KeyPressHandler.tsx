@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { shouldTriggerAppKeyPressCb } from '../helpers/utils';
 
 interface KeyPressHandlerProps {
     onKeyPress?: any;
@@ -34,7 +35,9 @@ class KeyPressHandler extends React.Component<KeyPressHandlerProps, KeyPressHand
     }
 
     onKeyPressHandler(e) {
-        this.props.onKeyPress(e.key);
+        if (shouldTriggerAppKeyPressCb()) {
+            this.props.onKeyPress(e.key);
+        }
     }
 
     _handleEventBinding(isActive) {
