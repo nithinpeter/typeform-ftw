@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FlatButton, FontIcon } from 'material-ui';
 import KeyPressHandler from './KeyPressHandler';
+import './StatusBar.css';
 
 const UP = 'ArrowUp';
 const DOWN = 'ArrowDown';

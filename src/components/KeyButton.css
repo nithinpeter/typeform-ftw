@@ -1,0 +1,8 @@
+.key-label {
+    width: 4px;
+    font-size: 12px;
+    padding: 3px;
+    border: 1px solid green;
+    border-radius: 3px;
+    margin-right: 5px;
+}

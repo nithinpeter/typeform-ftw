@@ -15,6 +15,15 @@ const initialState = {
             validations: ['required'],
         },
         {
+            type: 'BUTTON_GROUP',
+            options: [
+                { label: 'Male', keyLabel: 'm', value: 'M' },
+                { label: 'Female', keyLabel: 'f', value: 'F' },
+            ],
+            label: 'Gender?',
+            validations: ['required'],
+        },
+        {
             type: 'TEXT',
             label: 'Last name?',
             validations: ['required'],

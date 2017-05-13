@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TextField, DatePicker } from 'material-ui';
 import OkayButton from './OkayButton';
+import KeyButton from './KeyButton';
 import KeyPressHandler from './KeyPressHandler';
 import ScrollHandler from './ScrollHandler';
 import { navigateTo, updateAnswer, submitAnswer } from '../store/action_creators';
@@ -13,6 +14,7 @@ interface QuestionProps {
     label?: string;
     isActive?: boolean;
     index?: number;
+    options?: any;
     answer?: string;
     errorText?: string;
     dispatch?: any;
@@ -21,7 +23,6 @@ interface QuestionProps {
 class Question extends React.Component<QuestionProps, {}> {
 
     fieldRef;
-    containerRef;
 
     constructor() {
         super();
@@ -47,10 +48,13 @@ class Question extends React.Component<QuestionProps, {}> {
 
         switch (type) {
             case 'TEXT':
-                content = this.renderInputTypeQuestion(label);
+                content = this.renderInputTypeQuestion();
                 break;
             case 'DATEPICKER':
-                content = this.renderDatepickerTypeQuestion(label);
+                content = this.renderDatepickerTypeQuestion();
+                break;
+            case 'BUTTON_GROUP':
+                content = this.renderButtonGroupTypeQuestion();
                 break;
             default:
                 content = null;
@@ -61,7 +65,6 @@ class Question extends React.Component<QuestionProps, {}> {
             <ScrollHandler isActive={isActive} onFocus={this.handleOnFocus}>
                 <KeyPressHandler isActive={isActive} onKeyPress={this.handleKeyPress}>
                     <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}
-                        ref={(ref: any) => this.containerRef = ref}
                         onClick={this.handleFocusOnClick}>
                         <label className="question__label">{label}</label>
                         {content}
@@ -72,34 +75,64 @@ class Question extends React.Component<QuestionProps, {}> {
         );
     }
 
-    renderInputTypeQuestion(label) {
+    renderInputTypeQuestion() {
         return (
             <TextField
                 ref={(ref) => this.fieldRef = ref}
                 onChange={this.handleChangeAnswer}
                 fullWidth={true}
-                hintText={label}
-                name={label}
+                hintText={this.props.label}
+                name={this.props.label}
                 errorText={this.props.errorText} />
         );
     }
 
-    renderDatepickerTypeQuestion(label) {
+    renderDatepickerTypeQuestion() {
         return (
             <DatePicker
                 onShow={utils.disableAppKeyPressListener}
                 onChange={this.handleChangeAnswer}
                 fullWidth={true}
-                hintText={label}
-                name={label}
+                hintText={this.props.label}
+                name={this.props.label}
                 errorText={this.props.errorText}
                 autoOk={true} />
+        );
+    }
+
+    renderButtonGroupTypeQuestion() {
+        return (
+            <div className="button-group">
+                {
+                    this.props.options.map((item: any, index) => (
+                        <KeyButton
+                            key={index}
+                            label={item.label}
+                            selected={item.value === this.props.answer}
+                            onClick={this.handleChangeAnswer}
+                            keyLabel={item.keyLabel}
+                            value={item.value}
+                        />
+                    ))
+                }
+                <div className="error-message">
+                    {this.props.errorText}
+                </div>
+            </div>
         );
     }
 
     handleKeyPress(pressedKey) {
         if (pressedKey === ENTER) {
             this.handleSubmitAnswer();
+        }
+
+        if (this.props.options && this.props.options.length > 0) {
+            const option = this.props.options.filter((item: any) => item.keyLabel === pressedKey)[0];
+
+            if (option) {
+                this.handleChangeAnswer({}, option.value);
+            }
         }
     }
 
@@ -126,8 +159,6 @@ class Question extends React.Component<QuestionProps, {}> {
             setTimeout(() => {
                 if (this.fieldRef) {
                     this.fieldRef.focus();
-                } else if (this.containerRef) {
-                    this.containerRef.focus();
                 }
             }, 0);
         }

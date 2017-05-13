@@ -1,0 +1,37 @@
+.status-bar {
+    height: 40px;
+    background: #00bcd4;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.status-bar__inner {
+    margin: 0 auto;
+    width: 800px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-bar__progress-container {
+    flex: 1;
+    margin-right: 10px;
+    max-width: 200px;
+}
+
+.status-bar__progress {
+    height: 5px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    margin-top: 4px;
+}
+
+.status-bar__progress__filled {
+    height: 100%;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.status-bar__navigation-container {
+    /*flex: 1;*/
+}
