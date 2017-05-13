@@ -2,9 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import Question from './Question';
 import StatusBar from './StatusBar';
+import OkayButton from './OkayButton';
 import {
   navigateNext,
   navigatePrev,
+  submitForm,
 } from '../store/action_creators';
 import './App.css';
 
@@ -21,6 +23,7 @@ class App extends React.Component<AppProps, null> {
     super();
     this.navigateNext = this.navigateNext.bind(this);
     this.navigatePrev = this.navigatePrev.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   render() {
@@ -37,6 +40,14 @@ class App extends React.Component<AppProps, null> {
                 );
             })
           }
+          {
+            this.props.completedPercentage === 100  &&
+            (
+              <div className="submit-button">
+                <OkayButton onClick={this.handleSubmit} label="Submit"/>
+              </div>
+            )
+          }
         </div>
         <StatusBar
           navigateNext={this.navigateNext}
@@ -52,6 +63,10 @@ class App extends React.Component<AppProps, null> {
 
   navigatePrev() {
     this.props.dispatch(navigatePrev());
+  }
+
+  handleSubmit() {
+    this.props.dispatch(submitForm());
   }
 }
 

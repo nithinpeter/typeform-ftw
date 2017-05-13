@@ -19,7 +19,7 @@ class StatusBar extends React.Component<StatusBarProps, {}> {
     }
 
     render() {
-        const completedPercentage = Math.ceil(this.props.completedPercentage || 0);
+        const completedPercentage = this.props.completedPercentage;
         return (
             <KeyPressHandler onKeyPress={this.handleKeyPress} isActive={true}>
                 <div className="status-bar">

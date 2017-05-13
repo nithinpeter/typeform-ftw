@@ -3,7 +3,7 @@ import { TextField, DatePicker } from 'material-ui';
 import OkayButton from './OkayButton';
 import KeyPressHandler from './KeyPressHandler';
 import ScrollHandler from './ScrollHandler';
-import { updateAnswer, submitAnswer } from '../store/action_creators';
+import { navigateTo, updateAnswer, submitAnswer } from '../store/action_creators';
 import * as utils from '../helpers/utils';
 
 const ENTER = 'Enter';
@@ -29,7 +29,8 @@ class Question extends React.Component<QuestionProps, {}> {
         this.handleChangeAnswer = this.handleChangeAnswer.bind(this);
         this.handleSubmitAnswer = this.handleSubmitAnswer.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handleOnFocus = this.handleOnFocus.bind(this);
+        // this.handleOnFocus = this.handleOnFocus.bind(this);
+        this.handleFocusOnClick = this.handleFocusOnClick.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -60,7 +61,8 @@ class Question extends React.Component<QuestionProps, {}> {
             <ScrollHandler isActive={isActive} onFocus={this.handleOnFocus}>
                 <KeyPressHandler isActive={isActive} onKeyPress={this.handleKeyPress}>
                     <a href={'#' + index} className={`question ${isActive ? 'active' : ''}`}
-                        ref={(ref: any) => this.containerRef = ref}>
+                        ref={(ref: any) => this.containerRef = ref}
+                        onClick={this.handleFocusOnClick}>
                         <label className="question__label">{label}</label>
                         {content}
                         {isActive && <OkayButton onClick={this.handleSubmitAnswer} />}
@@ -112,6 +114,11 @@ class Question extends React.Component<QuestionProps, {}> {
 
     handleOnFocus() {
         console.log('focused');
+    }
+
+    handleFocusOnClick() {
+        this.props.dispatch(navigateTo(this.props.index));
+        this._focusActive(true);
     }
 
     _focusActive(isActive) {

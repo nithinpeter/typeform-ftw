@@ -3,6 +3,7 @@ import {
     UPDATE_ANSWER,
     NAVIGATE_NEXT,
     NAVIGATE_PREV,
+    NAVIGATE_TO,
 } from './action_creators';
 import validate from '../helpers/validate';
 
@@ -16,11 +17,6 @@ const initialState = {
         {
             type: 'TEXT',
             label: 'Last name?',
-            validations: ['required'],
-        },
-        {
-            type: 'DATEPICKER',
-            label: 'Date of Birth?',
             validations: ['required'],
         },
         {
@@ -57,6 +53,8 @@ function app(state, { type, payload }) {
             return navigateNext(state);
         case NAVIGATE_PREV:
             return navigatePrev(state);
+        case NAVIGATE_TO:
+            return navigateTo(state, payload);
         default:
             return state;
     }
@@ -111,9 +109,13 @@ function navigatePrev(state) {
     return state;
 }
 
+function navigateTo(state, payload) {
+    return Object.assign({}, state, { activeQuestion: payload.index });
+}
+
 function _calculateCompletedPercentage(qns) {
     const completed = qns.filter(qn => qn.isValid) || [];
-    return (completed.length / qns.length) * 100;
+    return Math.ceil((completed.length / qns.length) * 100);
 }
 
 export { app };

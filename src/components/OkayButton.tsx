@@ -3,24 +3,27 @@ import { RaisedButton, FontIcon } from 'material-ui';
 
 interface OkayButtonProps {
     onClick?: React.EventHandler<any>;
+    label?: string;
 }
 
-class OkayButton extends React.Component<OkayButtonProps, {}> {
+const OkayButton: React.StatelessComponent<OkayButtonProps> = (props: OkayButtonProps) => {
 
-    render() {
-        const {onClick} = this.props;
+    const { onClick, label } = props;
+    return (
+        <div className="btn">
+            <RaisedButton
+                label={label}
+                primary={true}
+                onClick={onClick}
+                icon={<FontIcon className="fa fa-check" />}
+            />
+            <span className="btn__press-enter">press <strong>ENTER</strong></span>
+        </div>
+    );
+};
 
-        return (
-            <div className="btn">
-                <RaisedButton
-                    label="Ok"
-                    primary={true}
-                    onClick={onClick}
-                    icon={<FontIcon className="fa fa-check" />}
-                />
-                <span className="btn__press-enter">press <strong>ENTER</strong></span>
-            </div>
-        );
-    }
-}
+OkayButton.defaultProps = {
+    label: 'Ok'
+};
+
 export default OkayButton;

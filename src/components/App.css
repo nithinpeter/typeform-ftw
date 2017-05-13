@@ -20,6 +20,13 @@ body {
     overflow: scroll;
 }
 
+.submit-button {
+    padding: 20px 10px;
+    background: #a4c639;
+    text-align: center;
+    color: #fff;
+}
+
 .question {
     opacity: 0.2;
     display: block;
@@ -63,11 +70,12 @@ body {
 }
 
 .status-bar__progress-container {
-
+    flex: 1;
+    margin-right: 10px;
+    max-width: 200px;
 }
 
 .status-bar__progress {
-    width: 200px;
     height: 5px;
     border-radius: 5px;
     border: 1px solid #fff;
