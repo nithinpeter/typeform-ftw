@@ -8,12 +8,14 @@
     "@types/react": "^15.0.24",
     "@types/react-dom": "^15.5.0",
     "material-ui": "^0.18.0",
+    "prettier": "^1.4.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
-    "serve": "^5.1.5"
+    "serve": "^5.1.5",
+    "wrappo": "^0.1.1"
   },
   "devDependencies": {
     "@types/material-ui": "^0.17.6",
@@ -24,6 +26,7 @@
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "now-start": "serve build/"
+    "now-start": "serve build/",
+    "prettify": "prettier"
   }
 }
